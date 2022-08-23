@@ -8,7 +8,6 @@ import { MessagingService } from '../messaging.service';
   styleUrls: ['./conversation-thread.component.css']
 })
 export class ConversationThreadComponent implements OnInit {
-
   senderMessages: Message[];
   userMessages: Message[];
 
@@ -16,14 +15,9 @@ export class ConversationThreadComponent implements OnInit {
 
   ngOnInit(): void {
     this.senderMessages = this.messagingSvce.getSenderMessages();
-    this.messagingSvce.senderMessagesChanged.subscribe((messages: Message[]) => {
-      console.log("********** sender messages have changed");
-      this.senderMessages = messages;
-    });
-
     this.userMessages = this.messagingSvce.getUserMessages();
     this.messagingSvce.userMessagesChanged.subscribe((messages: Message[]) => {
-      console.log("********** user messages have changed");
+      console.log("********** messages have changed");
       this.userMessages = messages;
     });
   }

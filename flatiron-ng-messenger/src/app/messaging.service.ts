@@ -5,31 +5,37 @@ import { Message } from './message';
 
 @Injectable()
 export class MessagingService {
-  private senderMessages: Message[] = [];
-  private userMessages: Message[] = [];
+  private senderMessages: Message[] = [
+    {
+      sender: { firstName: "Ludovic", isOnline: true },
+      text: "Message from Ludovic",
+      conversationId: 1,
+      sequenceNumber: 0,
+    },
+    {
+      sender: { firstName: "Jessica" },
+      text: "Message from Jessica",
+      conversationId: 1,
+      sequenceNumber: 1,
+    },
+  ];
+
+  private userMessages: Message[] = [
+    {
+      sender: { firstName: "Aurelie" },
+      text: "Message from Aurelie",
+      conversationId: 1,
+      sequenceNumber: 2,
+    },
+  ];
 
   userMessagesChanged = new EventEmitter<Message[]>();
-  senderMessagesChanged = new EventEmitter<Message[]>();
 
   getSenderMessages() {
-    this.httpClient
-      .get<Message[]>("http://localhost:8080/api/get-sender-messages")
-      .subscribe((messages: Message[]) => {
-        console.log(messages);
-        this.senderMessages = messages;
-        this.senderMessagesChanged.emit(this.senderMessages);
-      });
     return this.senderMessages.slice();
   }
 
   getUserMessages() {
-    this.httpClient
-      .get<Message[]>("http://localhost:8080/api/get-user-messages")
-      .subscribe((messages: Message[]) => {
-        console.log(messages);
-        this.userMessages = messages;
-        this.userMessagesChanged.emit(this.userMessages);
-      });
     return this.userMessages.slice();
   }
 
@@ -38,10 +44,7 @@ export class MessagingService {
     this.userMessagesChanged.emit(this.userMessages.slice());
   }
 
-  constructor(
-    private loggingSvce: LoggingService,
-    private httpClient: HttpClient
-  ) {
+  constructor(private loggingSvce: LoggingService) {
     loggingSvce.log("Messaging Data Service constructor completed");
   }
 }
